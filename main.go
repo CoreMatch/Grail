@@ -265,13 +265,19 @@ func cmdAdmin(args []string) error {
 	if len(args) == 0 {
 		return fmt.Errorf("用法: grail admin <project add|node add|nodes|node rm> ...")
 	}
-	fs := flag.NewFlagSet("admin "+args[0], flag.ExitOnError)
+	fs := flag.NewFlagSet("admin", flag.ExitOnError)
 	baseURL := fs.String("base-url", "", "Grail 节点地址")
 	adminToken := fs.String("admin-token", "", "管理令牌")
 	name := fs.String("name", "", "项目/节点名")
 	channels := fs.String("channels", "", "节点可同步渠道（逗号分隔，空=全部）")
 	id := fs.String("id", "", "节点 id（node rm）")
-	fs.Parse(args[1:])
+	// 位置参数（如 "project add"）在前，旗标在后：先切分再解析。
+	split := 0
+	for split < len(args) && !strings.HasPrefix(args[split], "-") {
+		split++
+	}
+	sub := strings.Join(args[:split], " ")
+	fs.Parse(args[split:])
 
 	if *baseURL == "" || *adminToken == "" {
 		return fmt.Errorf("--base-url 与 --admin-token 必填")
@@ -279,7 +285,7 @@ func cmdAdmin(args []string) error {
 	cl := client.New(*baseURL).WithBearer(*adminToken)
 	ctx := context.Background()
 
-	switch strings.Join(args[:1], " ") + " " + firstOf(args[1:]) {
+	switch sub {
 	case "project add":
 		if *name == "" {
 			return fmt.Errorf("--name 必填")
@@ -319,15 +325,8 @@ func cmdAdmin(args []string) error {
 		fmt.Printf("节点 %s 已吊销。\n", *id)
 		return nil
 	default:
-		return fmt.Errorf("未知 admin 子命令（支持：project add / node add / nodes / node rm）")
+		return fmt.Errorf("未知 admin 子命令 %q（支持：project add / node add / nodes / node rm）", sub)
 	}
-}
-
-func firstOf(args []string) string {
-	if len(args) == 0 {
-		return ""
-	}
-	return args[0]
 }
 
 // --- publish ---
