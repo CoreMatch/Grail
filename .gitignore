@@ -1,0 +1,8 @@
+# 运行数据与凭据（绝不进仓库）
+data/
+*.local.yaml
+credentials*.json
+
+# 构建产物
+/grail
+dist/
