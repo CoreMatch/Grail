@@ -2,7 +2,10 @@ module Grail
 
 go 1.26.10
 
-require github.com/gin-gonic/gin v1.10.1
+require (
+	github.com/gin-gonic/gin v1.10.1
+	github.com/goccy/go-yaml v1.18.0
+)
 
 require (
 	github.com/bytedance/sonic v1.11.6 // indirect
