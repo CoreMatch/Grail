@@ -28,7 +28,7 @@ down); verification therefore stops at local full-green, recorded here.
 4. Mirror on 127.0.0.1:18301 synced: 2 manifests verified against the
    anchor→keyring→project-key chain, **2 blobs really fetched and
    stored** (`blobs_fetched=2`).
-5. HA-Services-Deployer with the `grail` source pointed at the
+5. HA-Cupbearer with the `grail` source pointed at the
    **mirror** deployed `demo` through Tinyvisor: preflight reported
    `signature chain verified`; run record steps
    `resolve -> artifact(stage grail) -> symlink -> ensure-script ->
@@ -39,7 +39,7 @@ down); verification therefore stops at local full-green, recorded here.
 
 ### Loop 2 — upgrade, idempotence, revocation drill (native)
 
-1. Published `release/1.0`; mirror re-sync fetched it; Deployer
+1. Published `release/1.0`; mirror re-sync fetched it; Cupbearer
    `latest` resolved 1.0 and upgraded (`current: 0.6 -> 1.0`), process
    fingerprint switched to `sha256:317eee5a6aa3…`. This exercised the
    resolved-version alignment fix: version dirs follow the resolved
@@ -58,7 +58,7 @@ down); verification therefore stops at local full-green, recorded here.
 2. Published `release/0.6`, `release/1.0`, then `release/1.1`
    (`sha256:cf128f0a79c7…`); the mirror's periodic loop picked 1.1 up
    automatically (`applied=1 blobs_fetched=1`).
-3. Deployer re-anchored to the container root's public key and
+3. Cupbearer re-anchored to the container root's public key and
    re-pointed at the container mirror deployed 1.1:
    `resolve -> version 1.1`, `stage grail (sha256 cf128f0a79c7)`,
    symlink `1.0 -> 1.1`, health green; running process fingerprint
@@ -68,7 +68,7 @@ down); verification therefore stops at local full-green, recorded here.
 
 **Real:** both node roles ran as actual processes/containers; every
 byte traveled HTTP between separate nodes; all signatures were real
-Ed25519 with generated keys; Deployer and Tinyvisor were genuine
+Ed25519 with generated keys; Cupbearer and Tinyvisor were genuine
 binaries; fingerprints above are literal `sha256sum` outputs.
 
 **Placeholder / not yet exercised:**

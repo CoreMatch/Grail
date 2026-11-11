@@ -33,11 +33,11 @@ In scope:
 Out of scope (by decision, see the design document's decision record):
 
 - building artifacts (CI's job);
-- process management and deploy orchestration (Tinyvisor / Deployer);
+- process management and deploy orchestration (Tinyvisor / Cupbearer);
 - container-image tier sync this round (design doc "未来实现" section);
 - deploy leases (known risk, trigger conditions recorded in the design).
 
-The Deployer consumes Grail through its `grail` bare-metal artifact
-source (HA-Services-Deployer `internal/artifact/grail.go`, contract
-`ha-services-deployer.yaml` 1.4.0).
-[xref] HA-Services-Deployer `internal/artifact/grail.go::resolveGrailArtifact` — cross-repo, not checked from here.
+The Cupbearer consumes Grail through its `grail` bare-metal artifact
+source (HA-Cupbearer `internal/artifact/grail.go`, contract
+`ha-cupbearer.yaml` 1.4.0).
+[xref] HA-Cupbearer `internal/artifact/grail.go::resolveGrailArtifact` — cross-repo, not checked from here.
