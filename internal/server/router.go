@@ -12,64 +12,53 @@
 package server
 
 import (
-	"net/http"
-
 	"github.com/gin-gonic/gin"
 )
 
-// NewRouter 组装节点的完整路由表。骨架期所有处理函数返回 501；
-// 实现落地后逐个替换（路由表本身是契约面，先行冻结）。
-func NewRouter() *gin.Engine {
+// NewRouter 组装节点的完整路由表（处理函数全部挂在 Server 上）。
+func NewRouter(s *Server) *gin.Engine {
 	r := gin.New()
 	r.Use(gin.Recovery())
 
 	// --- 健康探测 ---
-	r.GET("/healthz", notImplemented)
+	r.GET("/healthz", s.handleHealthz)
 
 	// --- 规范取件 URL：对外唯一暴露的取件入口 ---
 	// 本节点托管字节时 200 直供；否则 302（外部地址或上级节点对应 URL）。
-	r.GET("/:project/:channel/:version/:platform", notImplemented)
-	r.HEAD("/:project/:channel/:version/:platform", notImplemented)
+	r.GET("/:project/:channel/:version/:platform", s.handleCanonical)
+	r.HEAD("/:project/:channel/:version/:platform", s.handleCanonical)
 
 	// --- 信任与状态分发 ---
-	r.GET("/v1/keyring", notImplemented)
-	r.GET("/v1/revocations", notImplemented)
+	r.GET("/v1/keyring", s.handleKeyring)
+	r.GET("/v1/revocations", s.handleRevocations)
 
 	// --- 只读解析 ---
-	r.GET("/v1/projects/:project/channels/:channel/versions", notImplemented)
-	r.GET("/v1/projects/:project/channels/:channel/resolve", notImplemented)
-	r.GET("/v1/projects/:project/channels/:channel/versions/:version", notImplemented)
+	r.GET("/v1/projects/:project/channels/:channel/versions", s.handleListVersions)
+	r.GET("/v1/projects/:project/channels/:channel/resolve", s.handleResolve)
+	r.GET("/v1/projects/:project/channels/:channel/versions/:version", s.handleGetVersion)
 
 	// --- 字节（内容寻址）：上传供发布用；下载供镜像同步用 ---
-	r.GET("/v1/blobs/:digest", notImplemented)
-	r.HEAD("/v1/blobs/:digest", notImplemented)
-	r.POST("/v1/blobs", notImplemented)
+	r.GET("/v1/blobs/:digest", s.handleBlobGet)
+	r.HEAD("/v1/blobs/:digest", s.handleBlobGet)
+	r.POST("/v1/blobs", s.handleBlobUpload)
 
 	// --- 发布 ---
-	r.POST("/v1/projects/:project/channels/:channel/versions", notImplemented)
+	r.POST("/v1/projects/:project/channels/:channel/versions", s.handlePublish)
 
 	// --- 撤销与宽限期（维护面） ---
-	r.POST("/v1/projects/:project/channels/:channel/versions/:version/yank", notImplemented)
-	r.DELETE("/v1/projects/:project/channels/:channel/versions/:version/yank", notImplemented)
-	r.POST("/v1/projects/:project/channels/:channel/versions/:version/deprecate", notImplemented)
-	r.DELETE("/v1/projects/:project/channels/:channel/versions/:version/deprecate", notImplemented)
+	r.POST("/v1/projects/:project/channels/:channel/versions/:version/yank", s.handleYank)
+	r.DELETE("/v1/projects/:project/channels/:channel/versions/:version/yank", s.handleUnyank)
+	r.POST("/v1/projects/:project/channels/:channel/versions/:version/deprecate", s.handleDeprecate)
+	r.DELETE("/v1/projects/:project/channels/:channel/versions/:version/deprecate", s.handleCancelDeprecate)
 
 	// --- 镜像同步（节点身份） ---
-	r.GET("/v1/sync/changes", notImplemented)
+	r.GET("/v1/sync/changes", s.handleSyncChanges)
 
 	// --- 原站管理 ---
-	r.POST("/v1/admin/projects", notImplemented)
-	r.POST("/v1/admin/nodes", notImplemented)
-	r.GET("/v1/admin/nodes", notImplemented)
-	r.DELETE("/v1/admin/nodes/:node", notImplemented)
+	r.POST("/v1/admin/projects", s.handleAdminRegisterProject)
+	r.POST("/v1/admin/nodes", s.handleAdminRegisterNode)
+	r.GET("/v1/admin/nodes", s.handleAdminListNodes)
+	r.DELETE("/v1/admin/nodes/:node", s.handleAdminDeleteNode)
 
 	return r
-}
-
-// notImplemented 是骨架期占位：契约面已冻结，实现未落地。
-func notImplemented(c *gin.Context) {
-	c.JSON(http.StatusNotImplemented, gin.H{
-		"error": "not implemented in skeleton",
-		"path":  c.FullPath(),
-	})
 }

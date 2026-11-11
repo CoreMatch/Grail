@@ -19,6 +19,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -30,6 +31,9 @@ import (
 
 	"Grail/internal/model"
 )
+
+// ErrSizeCap 表示字节超过大小上限（兜底限制，D10）。
+var ErrSizeCap = errors.New("blob exceeds size cap")
 
 // DigestRe 校验 digest 形态：sha256:<64hex>。
 var DigestRe = regexp.MustCompile(`^sha256:[0-9a-f]{64}$`)
@@ -214,7 +218,7 @@ func (s *Store) PutBlob(r io.Reader, expectDigest string, maxBytes int64) (int64
 		return 0, err
 	}
 	if maxBytes > 0 && written > maxBytes {
-		return 0, fmt.Errorf("blob exceeds size cap: %d bytes > %d", written, maxBytes)
+		return 0, fmt.Errorf("%w: %d bytes > %d", ErrSizeCap, written, maxBytes)
 	}
 	got := "sha256:" + hex.EncodeToString(h.Sum(nil))
 	if got != expectDigest {
