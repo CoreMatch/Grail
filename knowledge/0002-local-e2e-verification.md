@@ -84,7 +84,7 @@ binaries; fingerprints above are literal `sha256sum` outputs.
 
 ## Evidence
 
-- Run records under `/tmp/grail-e2e/deployer/data/deploy/` (ephemeral):
+- Run records under `/tmp/grail-e2e/cupbearer/data/deploy/` (ephemeral):
   runs `20261112-030245` (deploy 1.0), `20261112-031127` (container
   mirror deploy 1.1).
 - Node logs: `/tmp/grail-e2e/root/server.log`, `docker logs
