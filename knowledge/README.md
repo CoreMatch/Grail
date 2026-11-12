@@ -14,3 +14,4 @@ bash /home/lnb/Desktop/HA/HA-Contract/scripts/check-knowledge-anchors.sh
 | --- | --- |
 | 0001 | Scope and boundary (what Grail is / is not; contract locations) |
 | 0002 | Local end-to-end verification record (native + containerized loops) |
+| 0003 | Local container-chain E2E + production replacement (eight services, digest-verified) |
