@@ -4,7 +4,7 @@
   <p><a href="./README.zh-CN.md">简体中文</a></p>
 </div>
 
-Grail is signed artifact distribution for the HA ecosystem. It gives release publishers and service operators immutable versions and a canonical URL without tying consumers to the node that stores each file.
+Grail is signed artifact distribution for the Armorial ecosystem. It gives release publishers and service operators immutable versions and a canonical URL without tying consumers to the node that stores each file.
 
 ## Why Grail
 
@@ -17,9 +17,9 @@ Grail is signed artifact distribution for the HA ecosystem. It gives release pub
 ## Learn more
 
 - [Grail on GitHub](https://github.com/CoreMatch/Grail) — canonical source repository
-- [Grail API contract](https://github.com/CoreMatch/HA-Contract/blob/main/docs/api/openapi/grail.yaml) — versioned distribution surface
+- [Armorial Grail API contract](https://github.com/CoreMatch/HA-Contract/blob/main/docs/api/openapi/grail.yaml) — versioned distribution surface
 - [Server routes](internal/server/router.go) — registered HTTP surface
-- [Deployer documentation](https://wiki.mcnb.dev/deploy/) — HA operations guidance
+- [Deployer documentation](https://wiki.mcnb.dev/deploy/) — Armorial operations guidance
 
 ## Boundary
 

@@ -4,7 +4,7 @@
   <p><a href="./README.md">English</a></p>
 </div>
 
-Grail 为 HA 生态提供签名产物分发。它向发布者和服务运维人员提供不可变版本与规范 URL，消费方无需关心文件实际存储在哪个节点。
+Grail 为 Armorial 生态提供签名产物分发。它向发布者和服务运维人员提供不可变版本与规范 URL，消费方无需关心文件实际存储在哪个节点。
 
 ## 为什么选择 Grail
 
@@ -17,9 +17,9 @@ Grail 为 HA 生态提供签名产物分发。它向发布者和服务运维人�
 ## 进一步了解
 
 - [GitHub 上的 Grail](https://github.com/CoreMatch/Grail) — 规范源码仓库
-- [Grail API 契约](https://github.com/CoreMatch/HA-Contract/blob/main/docs/api/openapi/grail.yaml) — 版本化分发接口
+- [Armorial Grail API 契约](https://github.com/CoreMatch/HA-Contract/blob/main/docs/api/openapi/grail.yaml) — 版本化分发接口
 - [服务端路由](internal/server/router.go) — 已注册的 HTTP 接口
-- [部署者文档](https://wiki.mcnb.dev/deploy/) — HA 运维指引
+- [部署者文档](https://wiki.mcnb.dev/deploy/) — Armorial 运维指引
 
 ## 边界
 

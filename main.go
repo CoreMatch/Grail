@@ -1,4 +1,4 @@
-// Grail 是 HA 生态的产物分发上游：原站 + 分级镜像的混合形态。
+// Grail 是 Armorial 生态的产物分发上游：原站 + 分级镜像的混合形态。
 //
 // 设计稿：GRAIL-DESIGN-20261112.md（R2 定稿）。
 // 契约：HA-Contract docs/api/openapi/grail.yaml（METHOD+path 防漂移）。
